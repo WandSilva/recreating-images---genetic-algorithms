@@ -77,9 +77,9 @@ public class MyAlgorithm extends Algorithm {
         while ((convergence > minConvergence) && evaluations < maxEvaluations) {
             lastFitness = currentFitness;
             currentFitness = 0;
+
             // Copy the bests individuals to the offspring population
             int bestSize = copyBest;//number even
-
             for (int x = 0; x < bestSize; x++) {
                 offspringPopulation.add(new Solution(population.get((populationSize - 1) - x)));
             }
@@ -127,6 +127,7 @@ public class MyAlgorithm extends Algorithm {
             for (int i = 0; i < populationSize; i++) {
                 population.add(offspringPopulation.get(i));
             }
+
             population.sort(comparator);
             currentFitness = population.get(populationSize - 1).getFitness();
             convergence = Math.abs(currentFitness - lastFitness);
