@@ -8,6 +8,10 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 public class Images {
 
@@ -17,6 +21,25 @@ public class Images {
 
     public Images(String pathToImage) throws IOException {
         this.originalImage = this.setOriginalImage(pathToImage);
+    }
+
+    private Image fromGenotype(int[] genotype) {
+        int numGenes = 4;
+
+        List<Circle> circles = IntStream.iterate(0, i -> i + numGenes)
+                .limit(genotype.length)
+                .mapToObj(i -> new Circle(genotype[i], genotype[i + 1], genotype[i + 2], genotype[i + 3]))
+                .collect(Collectors.toList());
+
+        return this.fromCircles(circles);
+    }
+
+    public double getFitness(int[] genotype){
+        return this.getImageFitness(this.fromGenotype(genotype));
+    }
+
+    private Image fromCircles(List<Circle> circles) {
+        return new Image(this.height, this.width, circles);
     }
 
     public Image randomImage() {

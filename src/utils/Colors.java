@@ -1,6 +1,7 @@
 package utils;
 
 import java.awt.*;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.IntStream;
 
@@ -25,8 +26,8 @@ public class Colors {
     }
 
     public static double distance(Color a, Color b) {
-        List<Integer> colorsA = List.of(a.getRed(), a.getGreen(), a.getBlue());
-        List<Integer> colorsB = List.of(b.getRed(), b.getGreen(), b.getBlue());
+        List<Integer> colorsA = Arrays.asList(a.getRed(), a.getGreen(), a.getBlue());
+        List<Integer> colorsB = Arrays.asList(b.getRed(), b.getGreen(), b.getBlue());
 
         return Colors.euclideanDistance(colorsA, colorsB);
     }
