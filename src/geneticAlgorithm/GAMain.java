@@ -41,7 +41,7 @@ public class GAMain {
         readConfiguration();
     }
 
-    public void run() {
+    public void run() throws IOException {
         Problem problem;         // The problem to solve
         Algorithm algorithm;         // The algorithm to use
         Operator crossover;         // Crossover operator
@@ -122,7 +122,7 @@ public class GAMain {
         }
     }
 
-    public static void main(String args[]){
+    public static void main(String args[]) throws IOException {
 
         new GAMain().run();
     }

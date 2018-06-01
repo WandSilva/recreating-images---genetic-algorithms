@@ -6,8 +6,13 @@ import java.util.List;
 import java.util.stream.IntStream;
 
 public class Colors {
+    public static int MAX_RGB_VALUE = 16777215;
 
     public static Color average(List<Color> colors) {
+        if(colors.size() == 0){
+            return new Color(0);
+        }
+
         long r = 0;
         long g = 0;
         long b = 0;
@@ -22,7 +27,7 @@ public class Colors {
         g /= colors.size();
         b /= colors.size();
 
-        return new Color(r, g, b);
+        return new Color((int) r, (int) g, (int) b);
     }
 
     public static double distance(Color a, Color b) {

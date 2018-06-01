@@ -24,6 +24,14 @@ public class Image {
     }
 
 
+    public int getWidth() {
+        return width;
+    }
+
+    public int getHeight() {
+        return height;
+    }
+
     private Color getPointColor(int x, int y) {
         List<Circle> pointCircles = new ArrayList<>();
 

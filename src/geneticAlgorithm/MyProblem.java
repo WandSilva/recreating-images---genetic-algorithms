@@ -10,6 +10,7 @@ import jmetal.util.JMException;
 import jmetal.util.wrapper.XInt;
 import jmetal.util.wrapper.XReal;
 import model.Images;
+import utils.Colors;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
@@ -18,17 +19,15 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 
 public class MyProblem extends Problem {
-    String imagePath;
+    private Images images;
 
-    public MyProblem(Integer numberOfVariables, String solutionType, String imagePath) {
-        this.imagePath = imagePath;
+    public MyProblem(Integer numberOfVariables, String solutionType, String imagePath) throws IOException {
+        this.images = new Images(imagePath);
         configProblem(numberOfVariables, solutionType);
     }
 
     @Override
     public void evaluate(Solution solution) throws JMException {
-
-        double fitness = 0;
 
         XInt chromossome = new XInt(solution);
 
@@ -37,11 +36,8 @@ public class MyProblem extends Problem {
             genotype[i] = chromossome.getValue(i);
         }
 
-        try {
-            fitness = new Images(this.imagePath).getFitness(genotype);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        double fitness = this.images.getFitness(genotype);
+
 
         //setting the fitness of the solution
         solution.setObjective(0, fitness);
@@ -59,33 +55,19 @@ public class MyProblem extends Problem {
         lowerLimit_ = new double[numberOfVariables_];
 
 
-        //defining a min and max value for each gene of the chromosome
-        //for (int i = 0; i < numberOfVariables_; i++) {
-        //    lowerLimit_[i] = 0.0;
-        //    upperLimit_[i] = 1.0;
-        //}
+        for (int i = 0; i < (numberOfVariables_ - 3); i += 3) {
+            lowerLimit_[i] = 0.0;
+            upperLimit_[i] = this.images.getWidth();
 
+            lowerLimit_[i + 1] = 0.0;
+            upperLimit_[i + 1] = this.images.getHeight();
 
-        try {
-            BufferedImage read = ImageIO.read(Files.newInputStream(Paths.get(imagePath)));
+            lowerLimit_[i + 2] = 0.0;
+            upperLimit_[i + 2] = 100;
 
-            for (int i = 0; i < (numberOfVariables_ - 3); i += 3) {
-                lowerLimit_[i] = 0.0;
-                upperLimit_[i] = read.getWidth();;
-
-                lowerLimit_[i + 1] = 0.0;
-                upperLimit_[i + 1] = read.getHeight();;
-
-                lowerLimit_[i + 2] = 0.0;
-                upperLimit_[i + 2] = 100;
-
-                lowerLimit_[i + 3] = 0.0;
-                upperLimit_[i + 3] = Integer.MAX_VALUE;
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
+            lowerLimit_[i + 3] = 0.0;
+            upperLimit_[i + 3] = Colors.MAX_RGB_VALUE;
         }
-
 
 
         if (solutionType.compareTo("Real") == 0)

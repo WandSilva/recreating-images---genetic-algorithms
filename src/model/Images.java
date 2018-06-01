@@ -8,6 +8,7 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -21,15 +22,30 @@ public class Images {
 
     public Images(String pathToImage) throws IOException {
         this.originalImage = this.setOriginalImage(pathToImage);
+        System.out.println(pathToImage);
+    }
+
+    public int getHeight() {
+        return height;
+    }
+
+    public int getWidth() {
+        return width;
     }
 
     private Image fromGenotype(int[] genotype) {
         int numGenes = 4;
+        int x, y, radius, color;
+        List<Circle> circles = new ArrayList<>();
 
-        List<Circle> circles = IntStream.iterate(0, i -> i + numGenes)
-                .limit(genotype.length)
-                .mapToObj(i -> new Circle(genotype[i], genotype[i + 1], genotype[i + 2], genotype[i + 3]))
-                .collect(Collectors.toList());
+        for (int i = 0; i < genotype.length; i+=numGenes) {
+            x = genotype[i];
+            y = genotype[i+1];
+            radius =genotype[i+2];
+            color = genotype[i+3];
+
+            circles.add(new Circle(x, y, radius, color));
+        }
 
         return this.fromCircles(circles);
     }
