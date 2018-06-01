@@ -34,25 +34,6 @@ public class GAMain {
         readConfiguration();
     }
 
-    private void readConfiguration() {
-        Properties configFile = new Properties();
-        try {
-            configFile.load(new FileInputStream(configFileName));
-            numberCopyBest = Integer.parseInt(configFile.getProperty("NUMBERCOPYBESTSOLUTION"));
-            solutionType = configFile.getProperty("SOLUTION_TYPE");
-            numberFeatures = Integer.parseInt(configFile.getProperty("NUMBER_FEATURES"));
-            crossoverProbability = configFile.getProperty("CROSSOVER_PROBABILITY");
-            mutationProbability = configFile.getProperty("MUTATION_PROBABILITY");
-            mutatedValue = configFile.getProperty("MUTATION_INTERVAL");
-            populationSize = configFile.getProperty("POPULATION_SIZE");
-            maxEvaluation = configFile.getProperty("MAXEVALUATIONS");
-            alpha = configFile.getProperty("ALPHA");
-            convergence = Double.parseDouble(configFile.getProperty("CONVERGENCE"));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
     public void run() {
         Problem problem;         // The problem to solve
         Algorithm algorithm;         // The algorithm to use
@@ -61,7 +42,6 @@ public class GAMain {
         Operator selection;         // Selection operator
 
         HashMap parameters; // Operator parameters
-
 
         problem = new MyProblem(numberFeatures, solutionType);
         algorithm = new MyAlgorithm(problem, numberCopyBest, convergence);
@@ -96,19 +76,34 @@ public class GAMain {
             algorithm.addOperator("crossover", crossover);
             algorithm.addOperator("mutation", mutation);
             algorithm.addOperator("selection", selection);
+
+            //exec the algorithm
+            algorithm.execute();
+
         } catch (JMException e) {
             e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
         }
+    }
 
-        /*Aqui vai ficar a a execução do nosso algoritmo
-         ainda não da pra fazer nada pq não sabemos o que devemos fazer kkk*/
-        Boolean anyThing=true;
-        while(anyThing){
-            try {
-                algorithm.execute();
-            } catch (JMException | ClassNotFoundException e) {
-                e.printStackTrace();
-            }
+    private void readConfiguration() {
+        Properties configFile = new Properties();
+        try {
+            configFile.load(new FileInputStream(configFileName));
+            numberCopyBest = Integer.parseInt(configFile.getProperty("NUMBERCOPYBESTSOLUTION"));
+            solutionType = configFile.getProperty("SOLUTION_TYPE");
+            numberFeatures = Integer.parseInt(configFile.getProperty("NUMBER_FEATURES"));
+            crossoverProbability = configFile.getProperty("CROSSOVER_PROBABILITY");
+            mutationProbability = configFile.getProperty("MUTATION_PROBABILITY");
+            mutatedValue = configFile.getProperty("MUTATION_INTERVAL");
+            populationSize = configFile.getProperty("POPULATION_SIZE");
+            maxEvaluation = configFile.getProperty("MAXEVALUATIONS");
+            alpha = configFile.getProperty("ALPHA");
+            convergence = Double.parseDouble(configFile.getProperty("CONVERGENCE"));
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 }
+
