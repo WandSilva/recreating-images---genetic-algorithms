@@ -6,7 +6,8 @@ import java.util.Random;
 public class Circle {
     private int x;
     private int y;
-    private static final int RADIUS = 100;
+    private int radius;
+    private static final int DEFAULT_RADIUS = 100;
     private Color color;
     private static final Random random = new Random();
 
@@ -15,6 +16,34 @@ public class Circle {
         this.x = x;
         this.y = y;
         this.color = color;
+        this.radius = DEFAULT_RADIUS;
+    }
+
+
+    public Circle(int x, int y, int radius, Color color) {
+        this.x = x;
+        this.y = y;
+        this.color = color;
+        this.radius = radius;
+    }
+
+    public Circle(int x, int y, int radius, int colorRGB) {
+        this.x = x;
+        this.y = y;
+        this.radius = radius;
+        this.color = new Color(colorRGB);
+    }
+
+    public int getX() {
+        return x;
+    }
+
+    public int getY() {
+        return y;
+    }
+
+    public int getRadius() {
+        return radius;
     }
 
     public Color getColor() {
@@ -36,8 +65,9 @@ public class Circle {
         return new Color(r, g, b);
     }
 
+
     public boolean containsPoint(int i, int j) {
-        return (this.x - i) * (this.x - i) + (this.y - j) * (this.y - j) <= (Circle.RADIUS * Circle.RADIUS);
+        return (this.x - i) * (this.x - i) + (this.y - j) * (this.y - j) <= (this.radius * this.radius);
     }
 
 }
