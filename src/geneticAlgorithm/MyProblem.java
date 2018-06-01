@@ -9,6 +9,7 @@ import jmetal.encodings.variable.Int;
 import jmetal.util.JMException;
 import jmetal.util.wrapper.XInt;
 import jmetal.util.wrapper.XReal;
+import model.Images;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
@@ -17,9 +18,11 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 
 public class MyProblem extends Problem {
+    String imagePath;
 
     public MyProblem(Integer numberOfVariables, String solutionType, String imagePath) {
-        configProblem(numberOfVariables, solutionType, imagePath);
+        this.imagePath = imagePath;
+        configProblem(numberOfVariables, solutionType);
     }
 
     @Override
@@ -34,7 +37,11 @@ public class MyProblem extends Problem {
             genotype[i] = chromosome.getValue(i);
         }
 
-        //fitness = algumaFuncaoDeAvaliacao(genotype);
+        try {
+            fitness = new Images(this.imagePath).getFitness(genotype);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
         //setting the fitness of the solution
         solution.setObjective(0, fitness);
@@ -42,7 +49,7 @@ public class MyProblem extends Problem {
 
     }
 
-    private void configProblem(Integer numberOfVariables, String solutionType, String imagePath) {
+    private void configProblem(Integer numberOfVariables, String solutionType) {
         numberOfVariables_ = numberOfVariables;//number of features (chromosome size).
         numberOfObjectives_ = 1;
         numberOfConstraints_ = 0;
