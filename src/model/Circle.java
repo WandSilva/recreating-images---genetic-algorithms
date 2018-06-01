@@ -11,7 +11,7 @@ public class Circle {
     private static final Random random = new Random();
 
 
-    public Circle(int x, int y,  Color color) {
+    public Circle(int x, int y, Color color) {
         this.x = x;
         this.y = y;
         this.color = color;
@@ -21,22 +21,22 @@ public class Circle {
         return color;
     }
 
-    public static Circle random(){
+    public static Circle random() {
         int x = Circle.random.nextInt();
         int y = Circle.random.nextInt();
 
-        return new Circle(x,y, Circle.getRandomColor());
+        return new Circle(x, y, Circle.getRandomColor());
     }
 
-    public static Color getRandomColor(){
+    public static Color getRandomColor() {
         int r = Circle.random.nextInt(255);
         int g = Circle.random.nextInt(255);
         int b = Circle.random.nextInt(255);
 
-        return new Color(r,g,b);
+        return new Color(r, g, b);
     }
 
-    public boolean containsPoint(int i, int j){
+    public boolean containsPoint(int i, int j) {
         return (this.x - i) * (this.x - i) + (this.y - j) * (this.y - j) <= (Circle.RADIUS * Circle.RADIUS);
     }
 

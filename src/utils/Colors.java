@@ -1,40 +1,38 @@
 package utils;
 
-import model.Circle;
-
-import java.awt.Color;
+import java.awt.*;
 import java.util.List;
 import java.util.stream.IntStream;
 
-public class ColorUtils {
+public class Colors {
 
-    public static Color average(List<Color> colors){
+    public static Color average(List<Color> colors) {
         long r = 0;
         long g = 0;
         long b = 0;
 
-        for(Color color : colors){
+        for (Color color : colors) {
             r += color.getRed();
             g += color.getGreen();
             b += color.getBlue();
         }
 
-        r/= colors.size();
-        g/= colors.size();
-        b/= colors.size();
+        r /= colors.size();
+        g /= colors.size();
+        b /= colors.size();
 
         return new Color(r, g, b);
     }
 
-    public static double distance(Color a, Color b){
+    public static double distance(Color a, Color b) {
         List<Integer> colorsA = List.of(a.getRed(), a.getGreen(), a.getBlue());
         List<Integer> colorsB = List.of(b.getRed(), b.getGreen(), b.getBlue());
 
-        return euclideanDistance(colorsA, colorsB);
+        return Colors.euclideanDistance(colorsA, colorsB);
     }
 
-    private static double euclideanDistance(List<Integer> a, List<Integer> b){
-        if(a.size() != b.size()){
+    private static double euclideanDistance(List<Integer> a, List<Integer> b) {
+        if (a.size() != b.size()) {
             throw new IllegalArgumentException("Different sizes");
         }
 
