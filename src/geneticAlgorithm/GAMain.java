@@ -5,12 +5,19 @@ import jmetal.core.Operator;
 import jmetal.core.Problem;
 import jmetal.core.Solution;
 import jmetal.operators.crossover.CrossoverFactory;
+import jmetal.operators.mutation.BitFlipMutation;
+import jmetal.operators.mutation.PolynomialMutation;
 import jmetal.operators.mutation.SwapMutation;
+import jmetal.operators.mutation.UniformMutation;
 import jmetal.operators.selection.SelectionFactory;
 import jmetal.util.JMException;
 
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Properties;
@@ -28,6 +35,7 @@ public class GAMain {
     private String maxEvaluation;
     private String alpha;
     private double convergence;
+    private String imagePath;
 
     public GAMain() {
         this.configFileName = "GAConfig.properties";
@@ -43,7 +51,7 @@ public class GAMain {
 
         HashMap parameters; // Operator parameters
 
-        problem = new MyProblem(numberFeatures, solutionType);
+        problem = new MyProblem(numberFeatures, solutionType, imagePath);
         algorithm = new MyAlgorithm(problem, numberCopyBest, convergence);
 
         /* Algorithm parameters*/
@@ -58,13 +66,13 @@ public class GAMain {
             parameters.put("alpha", alphaValue);
             parameters.put("comparator", Comparator.comparing(Solution::getFitness).reversed());
             //tem outras tipos de crossover, temos que achar o melhor
-            crossover = CrossoverFactory.getCrossoverOperator("BLXAlphaCrossover", parameters);
+            crossover = CrossoverFactory.getCrossoverOperator("SinglePointCrossover", parameters);
 
             /*Mutation*/
             parameters = new HashMap();
             parameters.put("probability", Double.parseDouble(mutationProbability));
             parameters.put("mutatedValue", Double.parseDouble(mutatedValue));
-            mutation = new SwapMutation(parameters); //tem outras tipos de mutação, temos que achar o melhor
+            mutation = new BitFlipMutation(parameters); //tem outras tipos de mutação, temos que achar o melhor
 
             /* Selection Operator */
             parameters = new HashMap();
@@ -101,9 +109,15 @@ public class GAMain {
             maxEvaluation = configFile.getProperty("MAXEVALUATIONS");
             alpha = configFile.getProperty("ALPHA");
             convergence = Double.parseDouble(configFile.getProperty("CONVERGENCE"));
+            imagePath = configFile.getProperty("IMAGE_PATH");
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public static void main(String args[]){
+
+        new GAMain().run();
     }
 }
 
