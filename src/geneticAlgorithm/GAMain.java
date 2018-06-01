@@ -1,9 +1,6 @@
 package geneticAlgorithm;
 
-import jmetal.core.Algorithm;
-import jmetal.core.Operator;
-import jmetal.core.Problem;
-import jmetal.core.Solution;
+import jmetal.core.*;
 import jmetal.operators.crossover.CrossoverFactory;
 import jmetal.operators.mutation.BitFlipMutation;
 import jmetal.operators.mutation.PolynomialMutation;
@@ -11,6 +8,8 @@ import jmetal.operators.mutation.SwapMutation;
 import jmetal.operators.mutation.UniformMutation;
 import jmetal.operators.selection.SelectionFactory;
 import jmetal.util.JMException;
+import jmetal.util.wrapper.XInt;
+import jmetal.util.wrapper.XReal;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
@@ -76,7 +75,7 @@ public class GAMain {
 
             /* Selection Operator */
             parameters = new HashMap();
-            parameters.put("comparator", Comparator.comparing(Solution::getFitness).reversed());
+            parameters.put("comparator", Comparator.comparing(Solution::getFitness));
             //tem outras tipos de seleção, temos que achar o melhor
             selection = SelectionFactory.getSelectionOperator("BinaryTournament", parameters);
 
@@ -86,7 +85,14 @@ public class GAMain {
             algorithm.addOperator("selection", selection);
 
             //exec the algorithm
-            algorithm.execute();
+            SolutionSet population = algorithm.execute(); //gets the final population
+            Solution s = population.best(Comparator.comparing(Solution::getFitness));
+            XInt chromossome = new XInt(s);
+
+            int[] genotype = new int[numberFeatures];
+            for (int i = 0; i < numberFeatures; i++) {
+                genotype[i] = chromossome.getValue(i);
+            }
 
         } catch (JMException e) {
             e.printStackTrace();
@@ -94,6 +100,7 @@ public class GAMain {
             e.printStackTrace();
         }
     }
+
 
     private void readConfiguration() {
         Properties configFile = new Properties();

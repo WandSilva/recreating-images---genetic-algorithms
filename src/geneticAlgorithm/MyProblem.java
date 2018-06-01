@@ -30,11 +30,11 @@ public class MyProblem extends Problem {
 
         double fitness = 0;
 
-        XInt chromosome = new XInt(solution);
+        XInt chromossome = new XInt(solution);
 
         int[] genotype = new int[numberOfVariables_];
         for (int i = 0; i < numberOfVariables_; i++) {
-            genotype[i] = chromosome.getValue(i);
+            genotype[i] = chromossome.getValue(i);
         }
 
         try {

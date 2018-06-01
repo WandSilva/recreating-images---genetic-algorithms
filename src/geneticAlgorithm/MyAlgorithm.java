@@ -71,7 +71,7 @@ public class MyAlgorithm extends Algorithm {
 
         // Sort population
         population.sort(comparator);
-        currentFitness = population.get(populationSize - 1).getFitness();
+        currentFitness = population.get(0).getFitness();
         generation++;
 
         while ((convergence > minConvergence) && evaluations < maxEvaluations) {
@@ -81,7 +81,8 @@ public class MyAlgorithm extends Algorithm {
             // Copy the bests individuals to the offspring population
             int bestSize = copyBest;//number even
             for (int x = 0; x < bestSize; x++) {
-                offspringPopulation.add(new Solution(population.get((populationSize - 1) - x)));
+                //offspringPopulation.add(new Solution(population.get((populationSize - 1) - x)));
+                offspringPopulation.add(new Solution(population.get(x)));
             }
 
             // Reproductive cycle
@@ -129,7 +130,7 @@ public class MyAlgorithm extends Algorithm {
             }
 
             population.sort(comparator);
-            currentFitness = population.get(populationSize - 1).getFitness();
+            currentFitness = population.get(0).getFitness();
             convergence = Math.abs(currentFitness - lastFitness);
             System.out.println("convergência: " + convergence + " min " + minConvergence);
             offspringPopulation.clear();
