@@ -63,14 +63,14 @@ public class GAMain {
             parameters.put("alpha", alphaValue);
             parameters.put("comparator", Comparator.comparing(Solution::getFitness));
             //tem outras tipos de crossover, temos que achar o melhor
-            crossover = CrossoverFactory.getCrossoverOperator("SBXCrossover", parameters);
+            crossover = CrossoverFactory.getCrossoverOperator("BLXAlphaCrossover", parameters);
 
             /*Mutation*/
             parameters = new HashMap();
             parameters.put("probability", Double.parseDouble(mutationProbability));
             parameters.put("mutatedValue", Double.parseDouble(mutatedValue));
             //mutation = new PolynomialMutation(parameters); //tem outras tipos de mutação, temos que achar o melhor
-            mutation = MutationFactory.getMutationOperator("PolynomialMutation", parameters);
+            mutation = new MutationCreep(parameters);
 
             /* Selection Operator */
             parameters = new HashMap();

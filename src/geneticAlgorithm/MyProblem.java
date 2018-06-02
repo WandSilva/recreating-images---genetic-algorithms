@@ -36,9 +36,11 @@ public class MyProblem extends Problem {
         XReal chromossome = new XReal(solution);
 
         double[] genotype = new double[numberOfVariables_];
+
         for (int i = 0; i < numberOfVariables_; i++) {
             genotype[i] = chromossome.getValue(i);
         }
+
 
         double fitness = this.images.getFitness(genotype);
 
@@ -59,18 +61,9 @@ public class MyProblem extends Problem {
         lowerLimit_ = new double[numberOfVariables_];
 
 
-        for (int i = 0; i < (numberOfVariables_ - 3); i += 3) {
+        for (int i = 0; i < numberOfVariables_ ; i++) {
             lowerLimit_[i] = 0.0;
             upperLimit_[i] = 1.0;
-
-            lowerLimit_[i + 1] = 0.0;
-            upperLimit_[i + 1] = 1.0;
-
-            lowerLimit_[i + 2] = 0.0;
-            upperLimit_[i + 2] = 1.0;
-
-            lowerLimit_[i + 3] = 0.0;
-            upperLimit_[i + 3] = 1.0;
         }
 
 
