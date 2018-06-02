@@ -26,6 +26,10 @@ public class MyProblem extends Problem {
         configProblem(numberOfVariables, solutionType);
     }
 
+    public Images getImages() {
+        return images;
+    }
+
     @Override
     public void evaluate(Solution solution) throws JMException {
 
@@ -57,16 +61,16 @@ public class MyProblem extends Problem {
 
         for (int i = 0; i < (numberOfVariables_ - 3); i += 3) {
             lowerLimit_[i] = 0.0;
-            upperLimit_[i] = this.images.getWidth();
+            upperLimit_[i] = 1.0;
 
             lowerLimit_[i + 1] = 0.0;
-            upperLimit_[i + 1] = this.images.getHeight();
+            upperLimit_[i + 1] = 1.0;
 
             lowerLimit_[i + 2] = 0.0;
-            upperLimit_[i + 2] = 100;
+            upperLimit_[i + 2] = 1.0;
 
             lowerLimit_[i + 3] = 0.0;
-            upperLimit_[i + 3] = Colors.MAX_RGB_VALUE;
+            upperLimit_[i + 3] = 1.0;
         }
 
 

@@ -10,6 +10,7 @@ import jmetal.operators.selection.SelectionFactory;
 import jmetal.util.JMException;
 import jmetal.util.wrapper.XInt;
 import jmetal.util.wrapper.XReal;
+import model.Images;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
@@ -42,7 +43,7 @@ public class GAMain {
     }
 
     public void run() throws IOException {
-        Problem problem;         // The problem to solve
+        MyProblem problem;         // The problem to solve
         Algorithm algorithm;         // The algorithm to use
         Operator crossover;         // Crossover operator
         Operator mutation;         // Mutation operator
@@ -93,6 +94,9 @@ public class GAMain {
             for (int i = 0; i < numberFeatures; i++) {
                 genotype[i] = chromossome.getValue(i);
             }
+
+            int[][] matrix = problem.getImages().fromGenotype(genotype).getEvolutiveMatrix();
+            Images.render(matrix);
 
         } catch (JMException e) {
             e.printStackTrace();

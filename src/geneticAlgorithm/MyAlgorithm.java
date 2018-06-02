@@ -3,6 +3,8 @@ package geneticAlgorithm;
 import jmetal.core.*;
 import jmetal.util.JMException;
 import jmetal.util.comparators.FitnessComparator;
+import jmetal.util.wrapper.XInt;
+import model.Images;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -147,6 +149,10 @@ public class MyAlgorithm extends Algorithm {
         resultPopulation = population;
 
         System.out.println("Evaluations: " + evaluations);
+        System.out.println("Best: " + population.get(0));
+        System.out.println("Worst: " + population.get(population.size()-1));
+
+
         return resultPopulation;
     }
 }

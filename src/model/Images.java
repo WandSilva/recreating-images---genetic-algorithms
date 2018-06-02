@@ -5,6 +5,7 @@ import utils.Colors;
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -33,16 +34,16 @@ public class Images {
         return width;
     }
 
-    private Image fromGenotype(int[] genotype) {
+    public Image fromGenotype(int[] genotype) {
         int numGenes = 4;
         int x, y, radius, color;
         List<Circle> circles = new ArrayList<>();
 
-        for (int i = 0; i < genotype.length; i+=numGenes) {
-            x = genotype[i];
-            y = genotype[i+1];
-            radius =genotype[i+2];
-            color = genotype[i+3];
+        for (int i = 0; i < genotype.length; i += numGenes) {
+            x = genotype[i] * this.getHeight();
+            y = genotype[i + 1] * this.getWidth();
+            radius = genotype[i + 2] * Math.max(this.getHeight(), this.getWidth());
+            color = genotype[i + 3] * Colors.MAX_RGB_VALUE;
 
             circles.add(new Circle(x, y, radius, color));
         }
@@ -50,7 +51,7 @@ public class Images {
         return this.fromCircles(circles);
     }
 
-    public double getFitness(int[] genotype){
+    public double getFitness(int[] genotype) {
         return this.getImageFitness(this.fromGenotype(genotype));
     }
 
@@ -84,6 +85,7 @@ public class Images {
         return this.getOriginalMatrix(read);
     }
 
+
     private int[][] getOriginalMatrix(BufferedImage img) {
         int height = img.getHeight();
         int width = img.getWidth();
@@ -97,4 +99,19 @@ public class Images {
 
         return matrix;
     }
+
+    public static void render(int[][] color) throws IOException {
+
+        BufferedImage image = new BufferedImage(color[0].length, color.length, BufferedImage.TYPE_INT_RGB);
+
+        for (int i = 0; i < color.length; i++)
+            for (int j = 0; j < color[0].length; j++)
+                image.setRGB(j, i, color[i][j]);
+
+        File ImageFile = new File("result");
+
+        ImageIO.write(image, "jpg", ImageFile);
+
+    }
+
 }
