@@ -2,10 +2,7 @@ package geneticAlgorithm;
 
 import jmetal.core.*;
 import jmetal.operators.crossover.CrossoverFactory;
-import jmetal.operators.mutation.BitFlipMutation;
-import jmetal.operators.mutation.PolynomialMutation;
-import jmetal.operators.mutation.SwapMutation;
-import jmetal.operators.mutation.UniformMutation;
+import jmetal.operators.mutation.*;
 import jmetal.operators.selection.SelectionFactory;
 import jmetal.util.JMException;
 import jmetal.util.wrapper.XInt;
@@ -64,15 +61,16 @@ public class GAMain {
             parameters.put("probability", Double.parseDouble(crossoverProbability));
             double alphaValue = Double.parseDouble(alpha);
             parameters.put("alpha", alphaValue);
-            parameters.put("comparator", Comparator.comparing(Solution::getFitness).reversed());
+            parameters.put("comparator", Comparator.comparing(Solution::getFitness));
             //tem outras tipos de crossover, temos que achar o melhor
-            crossover = CrossoverFactory.getCrossoverOperator("SinglePointCrossover", parameters);
+            crossover = CrossoverFactory.getCrossoverOperator("SBXCrossover", parameters);
 
             /*Mutation*/
             parameters = new HashMap();
             parameters.put("probability", Double.parseDouble(mutationProbability));
             parameters.put("mutatedValue", Double.parseDouble(mutatedValue));
-            mutation = new BitFlipMutation(parameters); //tem outras tipos de mutação, temos que achar o melhor
+            //mutation = new PolynomialMutation(parameters); //tem outras tipos de mutação, temos que achar o melhor
+            mutation = MutationFactory.getMutationOperator("PolynomialMutation", parameters);
 
             /* Selection Operator */
             parameters = new HashMap();
@@ -88,9 +86,9 @@ public class GAMain {
             //exec the algorithm
             SolutionSet population = algorithm.execute(); //gets the final population
             Solution s = population.best(Comparator.comparing(Solution::getFitness));
-            XInt chromossome = new XInt(s);
+            XReal chromossome = new XReal(s);
 
-            int[] genotype = new int[numberFeatures];
+            double[] genotype = new double[numberFeatures];
             for (int i = 0; i < numberFeatures; i++) {
                 genotype[i] = chromossome.getValue(i);
             }

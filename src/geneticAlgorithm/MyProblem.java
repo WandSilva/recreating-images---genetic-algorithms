@@ -33,9 +33,9 @@ public class MyProblem extends Problem {
     @Override
     public void evaluate(Solution solution) throws JMException {
 
-        XInt chromossome = new XInt(solution);
+        XReal chromossome = new XReal(solution);
 
-        int[] genotype = new int[numberOfVariables_];
+        double[] genotype = new double[numberOfVariables_];
         for (int i = 0; i < numberOfVariables_; i++) {
             genotype[i] = chromossome.getValue(i);
         }
