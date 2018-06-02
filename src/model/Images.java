@@ -34,9 +34,9 @@ public class Images {
         return width;
     }
 
-    public Image fromGenotype(int[] genotype) {
+    public Image fromGenotype(double[] genotype) {
         int numGenes = 4;
-        int x, y, radius, color;
+        Double x, y, radius, color;
         List<Circle> circles = new ArrayList<>();
 
         for (int i = 0; i < genotype.length; i += numGenes) {
@@ -45,13 +45,13 @@ public class Images {
             radius = genotype[i + 2] * Math.max(this.getHeight(), this.getWidth());
             color = genotype[i + 3] * Colors.MAX_RGB_VALUE;
 
-            circles.add(new Circle(x, y, radius, color));
+            circles.add(new Circle(x.intValue(), y.intValue(), radius.intValue(), color.intValue()));
         }
 
         return this.fromCircles(circles);
     }
 
-    public double getFitness(int[] genotype) {
+    public double getFitness(double[] genotype) {
         return this.getImageFitness(this.fromGenotype(genotype));
     }
 
