@@ -76,7 +76,7 @@ public class MyAlgorithm extends Algorithm {
         currentFitness = population.get(0).getFitness();
         generation++;
 
-        while ((convergence > minConvergence) && evaluations < maxEvaluations) {
+        while (evaluations < maxEvaluations) {
             lastFitness = currentFitness;
             currentFitness = 0;
 
@@ -149,6 +149,7 @@ public class MyAlgorithm extends Algorithm {
         resultPopulation = population;
 
         System.out.println("Evaluations: " + evaluations);
+        System.out.println("Iterations: "+iteration);
         System.out.println("Best: " + population.get(0));
         System.out.println("Worst: " + population.get(population.size()-1));
 

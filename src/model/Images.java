@@ -35,17 +35,20 @@ public class Images {
     }
 
     public Image fromGenotype(double[] genotype) {
-        int numGenes = 4;
-        Double x, y, radius, color;
+        int numGenes = 7;
+        Double x, y, radius, r,g,b;
+        Double alpha;
         List<Circle> circles = new ArrayList<>();
 
         for (int i = 0; i < genotype.length; i += numGenes) {
             x = genotype[i] * this.getHeight();
             y = genotype[i + 1] * this.getWidth();
-            radius = genotype[i + 2] * Math.max(this.getHeight(), this.getWidth());
-            color = genotype[i + 3] * Colors.MAX_RGB_VALUE;
-
-            circles.add(new Circle(x.intValue(), y.intValue(), radius.intValue(), color.intValue()));
+            radius = genotype[i + 2] * Math.max(this.getHeight(), this.getWidth()) / 2;
+            r = genotype[i + 3] *255;
+            g= genotype[i + 4] * 255;
+            b = genotype[i + 5]* 255;
+            alpha = genotype[i + 6] * 255;
+            circles.add(new Circle(x.intValue(), y.intValue(), radius.intValue(), r.intValue(),g.intValue(),b.intValue(),alpha.intValue()));
         }
 
         return this.fromCircles(circles);
@@ -108,7 +111,7 @@ public class Images {
             for (int j = 0; j < color[0].length; j++)
                 image.setRGB(j, i, color[i][j]);
 
-        File ImageFile = new File("result");
+        File ImageFile = new File("result_" + System.currentTimeMillis() + ".jpg");
 
         ImageIO.write(image, "jpg", ImageFile);
 

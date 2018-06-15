@@ -33,6 +33,7 @@ public class GAMain {
     private String alpha;
     private double convergence;
     private String imagePath;
+    private String mutationSize;
 
     public GAMain() {
         this.configFileName = "GAConfig.properties";
@@ -67,11 +68,12 @@ public class GAMain {
 
             /*Mutation*/
             parameters = new HashMap();
+            parameters.put("mutationSize", Double.parseDouble(mutationSize));
             parameters.put("probability", Double.parseDouble(mutationProbability));
             parameters.put("mutatedValue", Double.parseDouble(mutatedValue));
             //mutation = new PolynomialMutation(parameters); //tem outras tipos de mutação, temos que achar o melhor
             mutation = new MutationCreep(parameters);
-
+            ((MutationCreep) mutation).setImage(problem.getImages());
             /* Selection Operator */
             parameters = new HashMap();
             parameters.put("comparator", Comparator.comparing(Solution::getFitness));
@@ -96,9 +98,7 @@ public class GAMain {
             int[][] matrix = problem.getImages().fromGenotype(genotype).getEvolutiveMatrix();
             Images.render(matrix);
 
-        } catch (JMException e) {
-            e.printStackTrace();
-        } catch (ClassNotFoundException e) {
+        } catch (JMException | ClassNotFoundException e) {
             e.printStackTrace();
         }
     }
@@ -119,6 +119,7 @@ public class GAMain {
             alpha = configFile.getProperty("ALPHA");
             convergence = Double.parseDouble(configFile.getProperty("CONVERGENCE"));
             imagePath = configFile.getProperty("IMAGE_PATH");
+            mutationSize = configFile.getProperty("MUTATION_SIZE");
         } catch (IOException e) {
             e.printStackTrace();
         }

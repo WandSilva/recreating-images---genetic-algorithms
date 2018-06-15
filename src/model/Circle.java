@@ -34,6 +34,13 @@ public class Circle {
         this.color = new Color(colorRGB);
     }
 
+    public Circle(int x, int y, int radius, int r, int g, int b, int alpha) {
+        this.x = x;
+        this.y = y;
+        this.radius = radius;
+        this.color = new Color(r,g,b,alpha);
+    }
+
     public int getX() {
         return x;
     }
