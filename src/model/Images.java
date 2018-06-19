@@ -34,27 +34,25 @@ public class Images {
         return width;
     }
 
-    public Image fromGenotype(double[] genotype) {
-        int numGenes = 7;
-        Double x, y, radius, r,g,b;
-        Double alpha;
+    public Image fromGenotype(int[] genotype) {
+        int numGenes = 5;
+        int x, y, radius, grayTone;
+        int alpha;
         List<Circle> circles = new ArrayList<>();
 
         for (int i = 0; i < genotype.length; i += numGenes) {
-            x = genotype[i] * this.getHeight();
-            y = genotype[i + 1] * this.getWidth();
-            radius = genotype[i + 2] * Math.max(this.getHeight(), this.getWidth()) / 2;
-            r = genotype[i + 3] *255;
-            g= genotype[i + 4] * 255;
-            b = genotype[i + 5]* 255;
-            alpha = genotype[i + 6] * 255;
-            circles.add(new Circle(x.intValue(), y.intValue(), radius.intValue(), r.intValue(),g.intValue(),b.intValue(),alpha.intValue()));
+            x = genotype[i];
+            y = genotype[i + 1];
+            radius = genotype[i + 2];
+            grayTone = genotype[i + 3];
+            alpha = genotype[i + 4];
+            circles.add(new Circle(x, y, radius, grayTone, grayTone, grayTone, alpha));
         }
 
         return this.fromCircles(circles);
     }
 
-    public double getFitness(double[] genotype) {
+    public double getFitness(int[] genotype) {
         return this.getImageFitness(this.fromGenotype(genotype));
     }
 
@@ -70,8 +68,8 @@ public class Images {
         int[][] evolutiveImage = img.getEvolutiveMatrix();
         float dist = 0;
 
-        for (int i = 0; i < this.height; i++) {
-            for (int j = 0; j < this.width; j++) {
+        for (int i = 0; i < this.width; i++) {
+            for (int j = 0; j < this.height; j++) {
                 Color original = new Color(this.originalImage[i][j]);
                 Color evolutive = new Color(evolutiveImage[i][j]);
                 dist += Colors.distance(original, evolutive);
@@ -92,10 +90,10 @@ public class Images {
     private int[][] getOriginalMatrix(BufferedImage img) {
         int height = img.getHeight();
         int width = img.getWidth();
-        int[][] matrix = new int[height][width];
+        int[][] matrix = new int[width][height];
 
-        for (int i = 0; i < height; i++) {
-            for (int j = 0; j < width; j++) {
+        for (int i = 0; i < width; i++) {
+            for (int j = 0; j < height; j++) {
                 matrix[i][j] = img.getRGB(i, j);
             }
         }

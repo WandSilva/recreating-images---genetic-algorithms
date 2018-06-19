@@ -64,16 +64,16 @@ public class GAMain {
             parameters.put("alpha", alphaValue);
             parameters.put("comparator", Comparator.comparing(Solution::getFitness));
             //tem outras tipos de crossover, temos que achar o melhor
-            crossover = CrossoverFactory.getCrossoverOperator("BLXAlphaCrossover", parameters);
+            crossover = CrossoverFactory.getCrossoverOperator("SinglePointCrossover", parameters);
 
             /*Mutation*/
             parameters = new HashMap();
             parameters.put("mutationSize", Double.parseDouble(mutationSize));
             parameters.put("probability", Double.parseDouble(mutationProbability));
             parameters.put("mutatedValue", Double.parseDouble(mutatedValue));
-            //mutation = new PolynomialMutation(parameters); //tem outras tipos de mutação, temos que achar o melhor
-            mutation = new MutationCreep(parameters);
-            ((MutationCreep) mutation).setImage(problem.getImages());
+            mutation = new BitFlipMutation(parameters); //tem outras tipos de mutação, temos que achar o melhor
+           // mutation = new MutationCreep(parameters);
+            //((MutationCreep) mutation).setImage(problem.getImages());
             /* Selection Operator */
             parameters = new HashMap();
             parameters.put("comparator", Comparator.comparing(Solution::getFitness));
@@ -88,9 +88,9 @@ public class GAMain {
             //exec the algorithm
             SolutionSet population = algorithm.execute(); //gets the final population
             Solution s = population.best(Comparator.comparing(Solution::getFitness));
-            XReal chromossome = new XReal(s);
+            XInt chromossome = new XInt(s);
 
-            double[] genotype = new double[numberFeatures];
+            int[] genotype = new int[numberFeatures];
             for (int i = 0; i < numberFeatures; i++) {
                 genotype[i] = chromossome.getValue(i);
             }

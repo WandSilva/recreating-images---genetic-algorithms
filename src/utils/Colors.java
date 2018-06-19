@@ -47,10 +47,10 @@ public class Colors {
     }
 
     public static double distance(Color a, Color b) {
-        List<Integer> colorsA = Arrays.asList(a.getRed(), a.getGreen(), a.getBlue());
-        List<Integer> colorsB = Arrays.asList(b.getRed(), b.getGreen(), b.getBlue());
+        List<Integer> colorsA = Arrays.asList(a.getRed(), a.getGreen(), a.getBlue(), a.getAlpha());
+        List<Integer> colorsB = Arrays.asList(b.getRed(), b.getGreen(), b.getBlue(), b.getAlpha());
 
-        return Colors.euclideanDistance(colorsA, colorsB) / Colors.MAX_RGB_VALUE;
+        return Colors.euclideanDistance(colorsA, colorsB);
     }
 
     private static double euclideanDistance(List<Integer> a, List<Integer> b) {

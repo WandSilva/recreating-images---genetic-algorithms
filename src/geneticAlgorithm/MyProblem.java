@@ -33,9 +33,9 @@ public class MyProblem extends Problem {
     @Override
     public void evaluate(Solution solution) throws JMException {
 
-        XReal chromossome = new XReal(solution);
+        XInt chromossome = new XInt(solution);
 
-        double[] genotype = new double[numberOfVariables_];
+        int[] genotype = new int[numberOfVariables_];
 
         for (int i = 0; i < numberOfVariables_; i++) {
             genotype[i] = chromossome.getValue(i);
@@ -61,10 +61,17 @@ public class MyProblem extends Problem {
         lowerLimit_ = new double[numberOfVariables_];
 
 
-        for (int i = 0; i < numberOfVariables_ ; i++) {
-            lowerLimit_[i] = 0.0;
-            upperLimit_[i] = 1.0;
-        }
+        lowerLimit_[0] = 0;
+        lowerLimit_[1] = 0;
+        lowerLimit_[2] = 0;
+        lowerLimit_[3] = 0;
+        lowerLimit_[4] = 0;
+
+        upperLimit_[0] = this.images.getWidth();
+        upperLimit_[1] = this.images.getHeight();
+        upperLimit_[2] = Math.max(this.images.getWidth(), this.images.getHeight());
+        upperLimit_[3] = 255;
+        upperLimit_[5] = 255;
 
 
         if (solutionType.compareTo("Real") == 0)

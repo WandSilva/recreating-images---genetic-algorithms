@@ -20,7 +20,7 @@ public class Image {
     public Image(int height, int width, List<Circle> randomCircles) {
         this.height = height;
         this.width = width;
-        this.evolutiveImage = new int[height][width];
+        this.evolutiveImage = new int[width][height];
         this.circles = randomCircles;
         Collections.reverse(this.circles);
     }
@@ -46,8 +46,8 @@ public class Image {
 
 
     public int[][] getEvolutiveMatrix() {
-        for (int i = 0; i < this.height; i++) {
-            for (int j = 0; j < this.width; j++) {
+        for (int i = 0; i < width; i++) {
+            for (int j = 0; j < height; j++) {
                 this.evolutiveImage[i][j] = getPointColor(i, j).getRGB();
             }
         }
