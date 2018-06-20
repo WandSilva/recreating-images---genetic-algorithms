@@ -18,12 +18,15 @@ import java.util.stream.IntStream;
 public class Images {
 
     private int[][] originalImage;
-    private int height;
-    private int width;
+    public static int height;
+    public static int width;
+    public static final int numFeatures = 5;
 
     public Images(String pathToImage) throws IOException {
-        this.originalImage = this.setOriginalImage(pathToImage);
-        System.out.println(pathToImage);
+        BufferedImage read = ImageIO.read(Files.newInputStream(Paths.get(pathToImage)));
+        Images.height = read.getHeight();
+        Images.width = read.getWidth();
+        this.originalImage = this.getOriginalMatrix(read);
     }
 
     public int getHeight() {
@@ -35,12 +38,11 @@ public class Images {
     }
 
     public Image fromGenotype(int[] genotype) {
-        int numGenes = 5;
         int x, y, radius, grayTone;
         int alpha;
         List<Circle> circles = new ArrayList<>();
 
-        for (int i = 0; i < genotype.length; i += numGenes) {
+        for (int i = 0; i < genotype.length; i += Images.numFeatures) {
             x = genotype[i];
             y = genotype[i + 1];
             radius = genotype[i + 2];
@@ -57,11 +59,7 @@ public class Images {
     }
 
     private Image fromCircles(List<Circle> circles) {
-        return new Image(this.height, this.width, circles);
-    }
-
-    public Image randomImage() {
-        return Image.random(this.height, this.width);
+        return new Image(circles);
     }
 
     public float getImageFitness(Image img) {
@@ -77,13 +75,6 @@ public class Images {
         }
 
         return dist;
-    }
-
-    private int[][] setOriginalImage(String path) throws IOException {
-        BufferedImage read = ImageIO.read(Files.newInputStream(Paths.get(path)));
-        this.height = read.getHeight();
-        this.width = read.getWidth();
-        return this.getOriginalMatrix(read);
     }
 
 
@@ -103,16 +94,21 @@ public class Images {
 
     public static void render(int[][] color) throws IOException {
 
-        BufferedImage image = new BufferedImage(color[0].length, color.length, BufferedImage.TYPE_INT_RGB);
+        BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
 
-        for (int i = 0; i < color.length; i++)
-            for (int j = 0; j < color[0].length; j++)
-                image.setRGB(j, i, color[i][j]);
+        for (int i = 0; i < Images.width; i++)
+            for (int j = 0; j < Images.height; j++)
+                image.setRGB(i, j, color[i][j]);
 
         File ImageFile = new File("result_" + System.currentTimeMillis() + ".jpg");
 
         ImageIO.write(image, "jpg", ImageFile);
 
+    }
+
+    public static void main(String[] args) throws IOException {
+        Images x = new Images("images/coracao.jpg");
+        Images.render(x.originalImage);
     }
 
 }
