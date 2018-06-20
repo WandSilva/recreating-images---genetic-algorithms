@@ -65,13 +65,13 @@ public class MyProblem extends Problem {
             lowerLimit_[1 + i] = 0;
             lowerLimit_[2 + i] = 0;
             lowerLimit_[3 + i] = 0;
-            lowerLimit_[4 + i] = 0;
+            lowerLimit_[4 + i] = -100;
 
             upperLimit_[i] = this.images.getWidth();
             upperLimit_[1 + i] = this.images.getHeight();
             upperLimit_[2 + i] = Math.max(this.images.getWidth(), this.images.getHeight());
             upperLimit_[3 + i] = 255;
-            upperLimit_[4 + i] = 255;
+            upperLimit_[4 + i] = 10000;
         }
 
 

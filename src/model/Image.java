@@ -7,9 +7,7 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
+import java.util.*;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -21,8 +19,10 @@ public class Image {
 
     public Image(List<Circle> randomCircles) {
         this.evolutiveImage = new int[Images.width][Images.height];
-        this.circles = randomCircles;
-        Collections.reverse(this.circles);
+        this.circles = randomCircles.stream()
+                .filter(c -> c.getPosition() > 0)
+                .sorted(Comparator.comparingInt(Circle::getPosition))
+                .collect(Collectors.toList());
     }
 
     private Color getPointColor(int x, int y) {

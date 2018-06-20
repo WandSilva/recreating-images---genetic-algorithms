@@ -21,6 +21,7 @@ public class Images {
     public static int height;
     public static int width;
     public static final int numFeatures = 5;
+    public static final int MAX_RGB = 16777215;
 
     public Images(String pathToImage) throws IOException {
         BufferedImage read = ImageIO.read(Files.newInputStream(Paths.get(pathToImage)));
@@ -39,7 +40,7 @@ public class Images {
 
     public Image fromGenotype(int[] genotype) {
         int x, y, radius, grayTone;
-        int alpha;
+        int position;
         List<Circle> circles = new ArrayList<>();
 
         for (int i = 0; i < genotype.length; i += Images.numFeatures) {
@@ -47,8 +48,8 @@ public class Images {
             y = genotype[i + 1];
             radius = genotype[i + 2];
             grayTone = genotype[i + 3];
-            alpha = genotype[i + 4];
-            circles.add(new Circle(x, y, radius, grayTone, grayTone, grayTone, alpha));
+            position = genotype[i + 4];
+            circles.add(new Circle(x, y, radius, grayTone, grayTone, grayTone, position));
         }
 
         return this.fromCircles(circles);
