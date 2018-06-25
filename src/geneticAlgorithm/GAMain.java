@@ -2,19 +2,13 @@ package geneticAlgorithm;
 
 import jmetal.core.*;
 import jmetal.operators.crossover.CrossoverFactory;
-import jmetal.operators.mutation.*;
 import jmetal.operators.selection.SelectionFactory;
 import jmetal.util.JMException;
 import jmetal.util.wrapper.XInt;
-import jmetal.util.wrapper.XReal;
 import model.Images;
 
-import javax.imageio.ImageIO;
-import java.awt.image.BufferedImage;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Properties;
@@ -62,8 +56,6 @@ public class GAMain {
             parameters.put("probability", Double.parseDouble(crossoverProbability));
             double alphaValue = Double.parseDouble(alpha);
             parameters.put("alpha", alphaValue);
-            parameters.put("comparator", Comparator.comparing(Solution::getFitness));
-            //tem outras tipos de crossover, temos que achar o melhor
             crossover = CrossoverFactory.getCrossoverOperator("SinglePointCrossover", parameters);
 
             /*Mutation*/
@@ -71,12 +63,12 @@ public class GAMain {
             parameters.put("mutationSize", Double.parseDouble(mutationSize));
             parameters.put("probability", Double.parseDouble(mutationProbability));
             parameters.put("mutatedValue", Double.parseDouble(mutatedValue));
-            mutation = new BitFlipMutation(parameters); //tem outras tipos de mutação, temos que achar o melhor
-           // mutation = new MutationCreep(parameters);
+            mutation = new MutationCircle(parameters);
+            // mutation = new MutationCreep(parameters);
             //((MutationCreep) mutation).setImage(problem.getImages());
+
             /* Selection Operator */
             parameters = new HashMap();
-            parameters.put("comparator", Comparator.comparing(Solution::getFitness));
             //tem outras tipos de seleção, temos que achar o melhor
             selection = SelectionFactory.getSelectionOperator("BinaryTournament", parameters);
 
