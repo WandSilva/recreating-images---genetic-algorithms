@@ -22,11 +22,14 @@ public class Images {
     public static int width;
     public static final int numFeatures = 5;
     public static final int MAX_RGB = 16777215;
+    private int maxFitness;
+    private int maxDoubt;
 
     public Images(String pathToImage) throws IOException {
         BufferedImage read = ImageIO.read(Files.newInputStream(Paths.get(pathToImage)));
         Images.height = read.getHeight();
         Images.width = read.getWidth();
+        this.maxFitness = 255 * read.getHeight() * read.getWidth();
         this.originalImage = this.getOriginalMatrix(read);
     }
 
@@ -63,9 +66,10 @@ public class Images {
         return new Image(circles);
     }
 
-    public float getImageFitness(Image img) {
+    public double getImageFitness(Image img) {
         int[][] evolutiveImage = img.getEvolutiveMatrix();
         float dist = 0;
+        double alpha = 0.7;
 
         for (int i = 0; i < this.width; i++) {
             for (int j = 0; j < this.height; j++) {
@@ -74,8 +78,8 @@ public class Images {
                 dist += Colors.distance(original, evolutive);
             }
         }
-
-        return dist;
+        dist /= this.maxFitness;
+        return alpha*dist + (1-alpha)*img.getDoubt();
     }
 
 

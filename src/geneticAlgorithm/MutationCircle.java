@@ -36,7 +36,7 @@ public class MutationCircle extends Mutation {
 
             if (PseudoRandom.randDouble() < mutationProbability_) {
 
-                pertubation = (int)(mutatedValue * x.getValue(i));
+                pertubation = (int)(mutatedValue * x.getUpperBound(i));
                 rand = PseudoRandom.randInt(-pertubation, pertubation);
                 tmp = x.getValue(i) + rand;
 

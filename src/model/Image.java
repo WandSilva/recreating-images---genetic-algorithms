@@ -35,6 +35,18 @@ public class Image {
         return Color.black;
     }
 
+    public double getDoubt(){
+        int doubt = 0;
+
+        for (int i = 0; i < this.circles.size(); i++) {
+            for (int j = 0; j < this.circles.size(); j++) {
+                doubt += circles.get(i).areaOfIntersection(circles.get(j));
+            }
+        }
+
+        return Math.sqrt(doubt)/(Images.height * Images.width);
+    }
+
 
     public int[][] getEvolutiveMatrix() {
         for (int i = 0; i < Images.width; i++) {
