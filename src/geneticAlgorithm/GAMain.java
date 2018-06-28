@@ -2,6 +2,7 @@ package geneticAlgorithm;
 
 import jmetal.core.*;
 import jmetal.operators.crossover.CrossoverFactory;
+import jmetal.operators.mutation.BitFlipMutation;
 import jmetal.operators.selection.SelectionFactory;
 import jmetal.util.JMException;
 import jmetal.util.wrapper.XInt;
@@ -9,6 +10,8 @@ import model.Images;
 
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Properties;
@@ -64,6 +67,7 @@ public class GAMain {
             parameters.put("probability", Double.parseDouble(mutationProbability));
             parameters.put("mutatedValue", Double.parseDouble(mutatedValue));
             mutation = new MutationCircle(parameters);
+            //mutation = new BitFlipMutation(parameters);
             // mutation = new MutationCreep(parameters);
             //((MutationCreep) mutation).setImage(problem.getImages());
 
@@ -119,7 +123,15 @@ public class GAMain {
 
     public static void main(String args[]) throws IOException {
 
+        LocalDateTime time = LocalDateTime.now();
+        String startTime = time.format(DateTimeFormatter.ISO_LOCAL_TIME);
+
         new GAMain().run();
+
+        time = LocalDateTime.now();
+        String endTime = time.format(DateTimeFormatter.ISO_LOCAL_TIME);
+        System.out.println("\nStart time: " + startTime);
+        System.out.println("End time: " + endTime);
     }
 }
 

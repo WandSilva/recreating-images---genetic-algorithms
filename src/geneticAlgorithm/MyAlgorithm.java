@@ -3,13 +3,6 @@ package geneticAlgorithm;
 import jmetal.core.*;
 import jmetal.util.JMException;
 import jmetal.util.comparators.FitnessComparator;
-import jmetal.util.wrapper.XInt;
-import model.Images;
-
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.nio.file.StandardOpenOption;
 import java.util.Comparator;
 
 public class MyAlgorithm extends Algorithm {
@@ -17,7 +10,7 @@ public class MyAlgorithm extends Algorithm {
     private int copyBest;
     private double minConvergence;
 
-    public MyAlgorithm(Problem problem, int numberCopyBest, double minConvergence) {
+    MyAlgorithm(Problem problem, int numberCopyBest, double minConvergence) {
         super(problem);
         this.copyBest = numberCopyBest;
         this.minConvergence = minConvergence;
@@ -28,10 +21,7 @@ public class MyAlgorithm extends Algorithm {
         int populationSize;
         int maxEvaluations;
         int evaluations = 0;
-        double currentFitness = 0;
-        double lastFitness = 0;
-        double convergence = 100;
-        int generation = 0;
+        double convergence;
         int iteration = 0;
 
         SolutionSet population;
@@ -57,7 +47,6 @@ public class MyAlgorithm extends Algorithm {
         mutationOperator = this.operators_.get("mutation");
         crossoverOperator = this.operators_.get("crossover");
         selectionOperator = this.operators_.get("selection");
-        generation++;
 
         // Create the initial population
         Solution newIndividual;
@@ -73,12 +62,11 @@ public class MyAlgorithm extends Algorithm {
 
         // Sort population
         population.sort(comparator);
-        currentFitness = population.get(0).getFitness();
-        generation++;
+        double currentFitness = population.get(0).getFitness();
 
+        double lastFitness;
         while (evaluations < maxEvaluations) {
             lastFitness = currentFitness;
-            currentFitness = 0;
 
             // Copy the bests individuals to the offspring population
             int bestSize = copyBest;//number even
@@ -140,13 +128,10 @@ public class MyAlgorithm extends Algorithm {
             for (int i = 0; i < population.size(); i++)
                 System.out.println("fit " + i + ": " + population.get(i).getFitness());
 
-            generation++;
             iteration++;
         } // while
         // Return a population with the best individual
-        SolutionSet resultPopulation = new SolutionSet();
         population.sort(comparator);
-        resultPopulation = population;
 
         System.out.println("Evaluations: " + evaluations);
         System.out.println("Iterations: "+iteration);
@@ -154,6 +139,6 @@ public class MyAlgorithm extends Algorithm {
         System.out.println("Worst: " + population.get(population.size()-1));
 
 
-        return resultPopulation;
+        return population;
     }
 }
