@@ -20,6 +20,8 @@ import java.nio.file.Paths;
 
 public class MyProblem extends Problem {
     private Images images;
+    private double[] mutationProbability_;
+    private double[] mutationInterval_;
 
     public MyProblem(Integer numberOfVariables, String solutionType, String imagePath) throws IOException {
         this.images = new Images(imagePath);
@@ -28,6 +30,14 @@ public class MyProblem extends Problem {
 
     public Images getImages() {
         return images;
+    }
+
+    public double[] getMutationInterval_() {
+        return mutationInterval_;
+    }
+
+    public double[] getMutationProbability_() {
+        return mutationProbability_;
     }
 
     @Override
@@ -59,19 +69,40 @@ public class MyProblem extends Problem {
 
         upperLimit_ = new double[numberOfVariables_];
         lowerLimit_ = new double[numberOfVariables_];
+        mutationProbability_ = new double[numberOfVariables_];
+        mutationInterval_ = new double[numberOfVariables_];
+
 
         for (int i = 0; i < numberOfVariables_; i += Images.numFeatures) {
             lowerLimit_[i] = 0;
             lowerLimit_[1 + i] = 0;
             lowerLimit_[2 + i] = 0;
             lowerLimit_[3 + i] = 0;
-            lowerLimit_[4 + i] = -numberOfVariables / Images.numFeatures;
+            lowerLimit_[4 + i] = 0;
+            lowerLimit_[5 + i] = 0;
+
 
             upperLimit_[i] = this.images.getWidth();
             upperLimit_[1 + i] = this.images.getHeight();
             upperLimit_[2 + i] = Math.max(this.images.getWidth(), this.images.getHeight());
             upperLimit_[3 + i] = 255;
             upperLimit_[4 + i] = numberOfVariables / Images.numFeatures;
+            upperLimit_[5 + i] = 1;
+
+            mutationProbability_[i] = 0.20;
+            mutationProbability_[1 + i] = 0.20;
+            mutationProbability_[2 + i] = 0.20;
+            mutationProbability_[3 + i] = 0.20;
+            mutationProbability_[4 + i] = 0.20;
+            mutationProbability_[5 + i] = 0.60;
+
+
+            mutationInterval_[i] = 0.20;
+            mutationInterval_[1 + i] = 0.20;
+            mutationInterval_[2 + i] = 0.20;
+            mutationInterval_[3 + i] = 0.20;
+            mutationInterval_[4 + i] = 0.20;
+            mutationInterval_[5 + i] = 1;
         }
 
 

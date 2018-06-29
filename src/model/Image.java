@@ -20,7 +20,7 @@ public class Image {
     public Image(List<Circle> randomCircles) {
         this.evolutiveImage = new int[Images.width][Images.height];
         this.circles = randomCircles.stream()
-                .filter(c -> c.getPosition() > 0)
+                .filter(Circle::isActive)
                 .sorted(Comparator.comparingInt(Circle::getPosition))
                 .collect(Collectors.toList());
     }

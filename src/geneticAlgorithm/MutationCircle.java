@@ -15,17 +15,16 @@ import java.util.List;
 
 public class MutationCircle extends Mutation {
 
-    private double mutatedValue;
-    private Double mutationProbability_ = null;
+
 
     private static final List VALID_TYPES = Arrays.asList(IntSolutionType.class);
+    private final double[] mutationIntervals;
+    private final double[] mutationProbabilities;
 
-    public MutationCircle(HashMap<String, Object> parameters) {
+    public MutationCircle(HashMap<String, Object> parameters, double[] probabilities, double[] intervals) {
         super(parameters);
-        if (parameters.get("probability") != null)
-            mutationProbability_ = (Double) parameters.get("probability");
-        if (parameters.get("mutatedValue") != null)
-            mutatedValue = (double) parameters.get("mutatedValue");
+        this.mutationProbabilities = probabilities;
+        this.mutationIntervals = intervals;
     }
 
 
@@ -34,9 +33,9 @@ public class MutationCircle extends Mutation {
         int pertubation, rand, tmp;
         for (int i = 0; i < solution.getDecisionVariables().length; i++) {
 
-            if (PseudoRandom.randDouble() < mutationProbability_) {
+            if (PseudoRandom.randDouble() < mutationProbabilities[i]) {
 
-                pertubation = (int)(mutatedValue * x.getUpperBound(i));
+                pertubation = (int) Math.round(mutationIntervals[i] * x.getUpperBound(i));
                 rand = PseudoRandom.randInt(-pertubation, pertubation);
                 tmp = x.getValue(i) + rand;
 

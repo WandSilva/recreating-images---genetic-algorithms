@@ -20,7 +20,7 @@ public class Images {
     private int[][] originalImage;
     public static int height;
     public static int width;
-    public static final int numFeatures = 5;
+    public static final int numFeatures = 6;
     public static final int MAX_RGB = 16777215;
     private int maxFitness;
     private int maxDoubt;
@@ -44,6 +44,7 @@ public class Images {
     public Image fromGenotype(int[] genotype) {
         int x, y, radius, grayTone;
         int position;
+        boolean display;
         List<Circle> circles = new ArrayList<>();
 
         for (int i = 0; i < genotype.length; i += Images.numFeatures) {
@@ -52,7 +53,8 @@ public class Images {
             radius = genotype[i + 2];
             grayTone = genotype[i + 3];
             position = genotype[i + 4];
-            circles.add(new Circle(x, y, radius, grayTone, grayTone, grayTone, position));
+            display = genotype[i + 5] == 1;
+            circles.add(new Circle(x, y, radius, grayTone, grayTone, grayTone, position, display));
         }
 
         return this.fromCircles(circles);
@@ -69,7 +71,7 @@ public class Images {
     public double getImageFitness(Image img) {
         int[][] evolutiveImage = img.getEvolutiveMatrix();
         float dist = 0;
-        double alpha = 0.7;
+        double alpha = 0.8;
 
         for (int i = 0; i < this.width; i++) {
             for (int j = 0; j < this.height; j++) {

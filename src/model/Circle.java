@@ -4,6 +4,7 @@ import java.awt.*;
 import java.util.Random;
 
 public class Circle {
+    private  boolean display;
     private int x;
     private int y;
     private int position;
@@ -26,12 +27,13 @@ public class Circle {
         this.color = new Color(colorRGB);
     }
 
-    public Circle(int x, int y, int radius, int r, int g, int b, int position) {
+    public Circle(int x, int y, int radius, int r, int g, int b, int position, boolean display) {
         this.x = x;
         this.y = y;
         this.radius = radius;
         this.color = new Color(r, g, b);
         this.position = position;
+        this.display = display;
     }
 
     public Color getColor() {
@@ -40,6 +42,10 @@ public class Circle {
 
     public int getPosition() {
         return position;
+    }
+
+    public boolean isActive(){
+        return display;
     }
 
     public boolean containsPoint(int i, int j) {
