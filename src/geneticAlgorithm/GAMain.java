@@ -1,8 +1,6 @@
 package geneticAlgorithm;
 
 import jmetal.core.*;
-import jmetal.operators.crossover.CrossoverFactory;
-import jmetal.operators.mutation.BitFlipMutation;
 import jmetal.operators.selection.SelectionFactory;
 import jmetal.util.JMException;
 import jmetal.util.wrapper.XInt;
@@ -59,7 +57,8 @@ public class GAMain {
             parameters.put("probability", Double.parseDouble(crossoverProbability));
             double alphaValue = Double.parseDouble(alpha);
             parameters.put("alpha", alphaValue);
-            crossover = CrossoverFactory.getCrossoverOperator("SinglePointCrossover", parameters);
+            //crossover = CrossoverFactory.getCrossoverOperator("SinglePointCrossover", parameters);
+            crossover = new SinglePointCircleCrossover(parameters);
 
             /*Mutation*/
             parameters = new HashMap();
