@@ -36,7 +36,7 @@ public class SinglePointCircleCrossover extends Crossover {
         try {
             if (PseudoRandom.randDouble() < probability) {
                 int crossoverPoint = 0;
-                while (!(crossoverPoint % 6 == 0)) {
+                while (!((crossoverPoint+1) % 6 == 0)) {
                     crossoverPoint = PseudoRandom.randInt(0, parent1.getDecisionVariables().length - 1);
                 }
 

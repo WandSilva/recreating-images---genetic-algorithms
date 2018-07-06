@@ -71,7 +71,7 @@ public class Images {
     public double getImageFitness(Image img) {
         int[][] evolutiveImage = img.getEvolutiveMatrix();
         float dist = 0;
-        double alpha = 0.8;
+        double alpha = 1;
 
         for (int i = 0; i < this.width; i++) {
             for (int j = 0; j < this.height; j++) {
