@@ -3,17 +3,41 @@ package geneticAlgorithm;
 import jmetal.core.*;
 import jmetal.util.JMException;
 import jmetal.util.comparators.FitnessComparator;
+
+import java.io.BufferedWriter;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.Comparator;
 
 public class MyAlgorithm extends Algorithm {
 
     private int copyBest;
     private double minConvergence;
+    private BufferedWriter avgFitnessOutput;
+    private BufferedWriter bestFitnessOutput;
+
 
     MyAlgorithm(Problem problem, int numberCopyBest, double minConvergence) {
         super(problem);
         this.copyBest = numberCopyBest;
         this.minConvergence = minConvergence;
+        try {
+
+            avgFitnessOutput = Files.newBufferedWriter(Paths.get(problem.getName() + "_avg_fitness_" + System.currentTimeMillis() + ".txt"));
+            bestFitnessOutput = Files.newBufferedWriter(Paths.get(problem.getName() + "_best_fitness_" + System.currentTimeMillis() + ".txt"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void writeFitness(double avgFitness, double bestFitness) throws JMException {
+        try {
+            avgFitnessOutput.write(avgFitness + "\n");
+            bestFitnessOutput.write(bestFitness + "\n");
+        } catch (IOException e) {
+            throw new JMException("Failed on writing fitness");
+        }
     }
 
     @Override
@@ -62,11 +86,21 @@ public class MyAlgorithm extends Algorithm {
 
         // Sort population
         population.sort(comparator);
+        double avgFitness = 0;
         double currentFitness = population.get(0).getFitness();
 
         double lastFitness;
+        Solution bestIndividual = population.get(0);
         while (evaluations < maxEvaluations) {
             lastFitness = currentFitness;
+
+            for (int i = 0; i < populationSize; i++) {
+                avgFitness = population.get(i).getFitness();
+            }
+
+            avgFitness /= populationSize;
+
+            this.writeFitness(avgFitness, currentFitness);
 
             // Copy the bests individuals to the offspring population
             int bestSize = copyBest;//number even
@@ -121,6 +155,11 @@ public class MyAlgorithm extends Algorithm {
 
             population.sort(comparator);
             currentFitness = population.get(0).getFitness();
+
+            if (population.get(0).getFitness() < bestIndividual.getFitness()) {
+                bestIndividual = population.get(0);
+            }
+
             convergence = Math.abs(currentFitness - lastFitness);
             System.out.println("convergência: " + convergence + " min " + minConvergence);
             offspringPopulation.clear();
@@ -134,10 +173,20 @@ public class MyAlgorithm extends Algorithm {
         population.sort(comparator);
 
         System.out.println("Evaluations: " + evaluations);
-        System.out.println("Iterations: "+iteration);
+        System.out.println("Iterations: " + iteration);
         System.out.println("Best: " + population.get(0));
-        System.out.println("Worst: " + population.get(population.size()-1));
+        System.out.println("Best of all: " + bestIndividual);
+        System.out.println("Worst: " + population.get(population.size() - 1));
 
+        try {
+            this.bestFitnessOutput.close();
+            this.avgFitnessOutput.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        //population.remove(populationSize-1);
+        //population.add(bestIndividual);
+        population.sort(comparator);
 
         return population;
     }
