@@ -91,14 +91,6 @@ public class MyProblem extends Problem {
             upperLimit_[4 + i] = numberOfVariables / Images.numFeatures;
             upperLimit_[5 + i] = 1;
 
-            mutationProbability_[i] = 0.20;
-            mutationProbability_[1 + i] = 0.20;
-            mutationProbability_[2 + i] = 0.25;
-            mutationProbability_[3 + i] = 0.30;
-            mutationProbability_[4 + i] = 0.15;
-            mutationProbability_[5 + i] = 0.20;
-
-
             mutationInterval_[i] = 0.20;
             mutationInterval_[1 + i] = 0.20;
             mutationInterval_[2 + i] = 0.20;

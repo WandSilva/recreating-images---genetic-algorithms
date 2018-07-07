@@ -64,7 +64,7 @@ public class GAMain {
             parameters.put("mutationSize", Double.parseDouble(mutationSize));
             parameters.put("probability", Double.parseDouble(mutationProbability));
             parameters.put("mutatedValue", Double.parseDouble(mutatedValue));
-            mutation = new MutationCircle(parameters, problem.getMutationProbability_(), problem.getMutationInterval_());
+            mutation = new MutationCircle(parameters, problem.getMutationInterval_());
             //mutation = new BitFlipMutation(parameters);
             // mutation = new MutationCreep(parameters);
             //((MutationCreep) mutation).setImage(problem.getImages());

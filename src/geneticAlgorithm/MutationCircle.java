@@ -19,12 +19,15 @@ public class MutationCircle extends Mutation {
 
     private static final List VALID_TYPES = Arrays.asList(IntSolutionType.class);
     private final double[] mutationIntervals;
-    private final double[] mutationProbabilities;
+    private double mutationProbability;
 
-    public MutationCircle(HashMap<String, Object> parameters, double[] probabilities, double[] intervals) {
+    public MutationCircle(HashMap<String, Object> parameters, double[] intervals) {
         super(parameters);
-        this.mutationProbabilities = probabilities;
         this.mutationIntervals = intervals;
+
+        if (parameters.get("probability") != null) {
+            mutationProbability = (Double) parameters.get("probability");
+        }
     }
 
 
@@ -33,7 +36,7 @@ public class MutationCircle extends Mutation {
         int pertubation, rand, tmp;
         for (int i = 0; i < solution.getDecisionVariables().length; i++) {
 
-            if (PseudoRandom.randDouble() < mutationProbabilities[i]) {
+            if (PseudoRandom.randDouble() < mutationProbability) {
 
                 pertubation = (int) Math.round(mutationIntervals[i] * x.getUpperBound(i));
                 rand = PseudoRandom.randInt(-pertubation, pertubation);
