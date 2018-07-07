@@ -57,9 +57,8 @@ public class GAMain {
             parameters.put("probability", Double.parseDouble(crossoverProbability));
             double alphaValue = Double.parseDouble(alpha);
             parameters.put("alpha", alphaValue);
-            //crossover = CrossoverFactory.getCrossoverOperator("SinglePointCrossover", parameters);
             crossover = new SinglePointCircleCrossover(parameters);
-
+            //crossover = new HalfImageCrossover(parameters, problem.getImages());
             /*Mutation*/
             parameters = new HashMap();
             parameters.put("mutationSize", Double.parseDouble(mutationSize));
