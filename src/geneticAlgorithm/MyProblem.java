@@ -25,6 +25,9 @@ public class MyProblem extends Problem {
 
     public MyProblem(Integer numberOfVariables, String solutionType, String imagePath) throws IOException {
         this.images = new Images(imagePath);
+        String[] path = imagePath.split("/");
+        problemName_ = path[path.length-1];
+
         configProblem(numberOfVariables, solutionType);
     }
 
@@ -65,7 +68,6 @@ public class MyProblem extends Problem {
         numberOfVariables_ = numberOfVariables;//number of features (chromosome size).
         numberOfObjectives_ = 1;
         numberOfConstraints_ = 0;
-        problemName_ = "ImageProblem";
 
         upperLimit_ = new double[numberOfVariables_];
         lowerLimit_ = new double[numberOfVariables_];
