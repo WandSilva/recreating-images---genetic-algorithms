@@ -8,36 +8,46 @@ import java.io.BufferedWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.List;
 
 public class MyAlgorithm extends Algorithm {
 
     private int copyBest;
     private double minConvergence;
-    private BufferedWriter avgFitnessOutput;
-    private BufferedWriter bestFitnessOutput;
+    private String name;
+    private List<Double> avgFitness;
+    private List<Double> bestFitness;
 
 
     MyAlgorithm(Problem problem, int numberCopyBest, double minConvergence) {
         super(problem);
+        this.name = problem.getName();
         this.copyBest = numberCopyBest;
         this.minConvergence = minConvergence;
-        try {
 
-            avgFitnessOutput = Files.newBufferedWriter(Paths.get(problem.getName() + "_avg_fitness_" + System.currentTimeMillis() + ".txt"));
-            bestFitnessOutput = Files.newBufferedWriter(Paths.get(problem.getName() + "_best_fitness_" + System.currentTimeMillis() + ".txt"));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        this.avgFitness = new ArrayList<>(100);
+        this.bestFitness = new ArrayList<>(100);
     }
 
-    private void writeFitness(double avgFitness, double bestFitness) throws JMException {
-        try {
-            avgFitnessOutput.write(avgFitness + "\n");
-            bestFitnessOutput.write(bestFitness + "\n");
-        } catch (IOException e) {
-            throw new JMException("Failed on writing fitness");
+    private void storeFitness(double avgFitness, double bestFitness) {
+        this.avgFitness.add(avgFitness);
+        this.bestFitness.add(bestFitness);
+    }
+
+    private void writeFitness() throws IOException {
+        BufferedWriter avgFitnessOutput = Files.newBufferedWriter(Paths.get(this.name + "_avg_fitness_" + System.currentTimeMillis() + ".txt"));
+        BufferedWriter bestFitnessOutput = Files.newBufferedWriter(Paths.get(this.name + "_best_fitness_" + System.currentTimeMillis() + ".txt"));
+
+        for (int i = 0; i < this.avgFitness.size() ; i++) {
+            avgFitnessOutput.write(this.avgFitness.get(i) + "\n");
+            bestFitnessOutput.write(this.bestFitness.get(i) + "\n");
         }
+
+        avgFitnessOutput.close();
+        bestFitnessOutput.close();
+
     }
 
     @Override
@@ -93,14 +103,14 @@ public class MyAlgorithm extends Algorithm {
         Solution bestIndividual = population.get(0);
         while (evaluations < maxEvaluations) {
             lastFitness = currentFitness;
-
+            avgFitness = 0;
             for (int i = 0; i < populationSize; i++) {
-                avgFitness = population.get(i).getFitness();
+                avgFitness += population.get(i).getFitness();
             }
 
             avgFitness /= populationSize;
 
-            this.writeFitness(avgFitness, currentFitness);
+            this.storeFitness(avgFitness, currentFitness);
 
             // Copy the bests individuals to the offspring population
             int bestSize = copyBest;//number even
@@ -179,8 +189,7 @@ public class MyAlgorithm extends Algorithm {
         System.out.println("Worst: " + population.get(population.size() - 1));
 
         try {
-            this.bestFitnessOutput.close();
-            this.avgFitnessOutput.close();
+            this.writeFitness();
         } catch (IOException e) {
             e.printStackTrace();
         }
